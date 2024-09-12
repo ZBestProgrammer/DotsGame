@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра Точки</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px; 
+            height: 800px;
+            background-color: #fff;
+            background-image:
+            linear-gradient(to right, black 1px, transparent 1px),
+            linear-gradient(to bottom, black 1px, transparent 1px);
+            background-size: 40px 40px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .intersection {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            transform: translate(-50%, -50%); 
+        }
+
+        .intersection:hover {
+            background-color: #ddd;
+        }
+
+        .line {
+            position: absolute;
+            height: 2px;
+            background-color: red;
+            transform: translate(-50%, -50%);
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+    <div class="clr-button">
+        <button id="clear-button">ОЧИТСТИИТТТЬЬЬЬЬЬ</button>
+    </div>
+    <div class="paint-stick-button">
+        <button id="paint-stick-button">Соединить</button>
+    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const clearButton = document.getElementById('clear-button');
+        const paintStickButton = document.getElementById('paint-stick-button');
+
+        const gridSize = 20;
+        const cellSize = 40; 
+
+        let dots = new Array(gridSize);
+
+        let flag = 0;
+
+        for (let row = 0; row <= gridSize; row++) {
+            dots[row] = new Array(gridSize);
+            for (let col = 0; col <= gridSize; col++) {
+                const intersection = document.createElement('div');
+                intersection.className = 'intersection';
+                intersection.dataset.row = `${row}`;
+                intersection.dataset.col = `${col}`; 
+
+                intersection.style.left = `${col * cellSize}px`;
+                intersection.style.top = `${row * cellSize}px`;
+
+                gameContainer.appendChild(intersection);
+                dots[row][col] = intersection;
+            }
+        }
+
+        clearButton.onclick = () => {
+            clear();
+            clearCicles();
+        }
+
+        paintStickButton.onclick = () => {
+            paintCicles([[1, 2], [7, 8], [9, 15]]);
+        }
+
+        gameContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('intersection')) {
+                var dataset = event.target.dataset;
+                paintOverDot(dataset.row, dataset.col, 'red');
+            }
+        });
+
+        function paintOverDot(x, y, color) {
+            var dot = dots[x][y];
+            dot.style.backgroundColor = `${color}`;
+            $.ajax({
+                url: 'test/',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' 
+                },
+                data: {
+                    'position': `${[x, y]}`
+                }
+            })
+        }
+
+        function clear(){  
+        for (let i = 0; i < dots.length; i++) {
+            for (let j = 0; j < dots.length; j++) {
+                dots[i][j].style.backgroundColor = 'transparent';  
+            }
+        }   
+        }
+
+        function clearCicles() {
+            let sticks = document.getElementsByClassName('line');
+            while (sticks.length > 0){
+                gameContainer.removeChild(sticks[0]);
+            }
+        }
+
+        function paintStick(x1, y1, x2, y2) {
+            const stick = document.createElement('div');
+            
+            let width = Math.sqrt((x2 - x1)**2 + (y2 - y1)**2) * cellSize;
+            
+            let angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            stick.className = 'line';
+            stick.style.width = `${width}px`;
+            stick.style.transform = `rotate(${angle}deg)`;
+            
+            stick.style.left = `${x1 * cellSize}px`;
+            stick.style.top = `${y1 * cellSize}px`;
+            stick.style.transformOrigin = '0 0'; 
+            
+            gameContainer.appendChild(stick);
+        }
+
+        function paintCicles(dots) {
+            for (let i = 0; i < dots.length; i++) {
+                nextID = (i + 1) % dots.length;        
+                paintStick(dots[i][0], dots[i][1], dots[nextID][0], dots[nextID][1]);
+            }
+            
+        }
+
+
+
+
+
+    </script>
+</body>
+</html>
