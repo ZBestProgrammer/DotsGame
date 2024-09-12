@@ -1,19 +1,18 @@
 from django.shortcuts import render
 
-from Classes.GameField import GameField
 
-# class Dot:
-#     chain = []
+class Dot:
+    chain = []
 
-# class GameField:
-#     dots = {}
+class GameField:
+    dots = {}
     
-#     def addNewDot(self, position):
-#         newDot = Dot()
-#         self.dots[position] = newDot 
+    def addNewDot(self, position):
+        newDot = Dot()
+        self.dots[position] = newDot 
 
-#     def getDots(self):
-#         return self.dots
+    def getDots(self):
+        return self.dots
 
 gameField = GameField()
 
