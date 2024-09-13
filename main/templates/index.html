@@ -88,6 +88,8 @@
             }
         }
 
+
+
         clearButton.onclick = () => {
             clear();
             clearCicles();
@@ -153,6 +155,7 @@
         }
 
         function paintCicles(dots) {
+            console.log(dots);
             for (let i = 0; i < dots.length; i++) {
                 nextID = (i + 1) % dots.length;        
                 paintStick(dots[i][0], dots[i][1], dots[nextID][0], dots[nextID][1]);

@@ -1,30 +1,31 @@
 from django.shortcuts import render
 
+from DotsGame.Injections import *
 
-class Dot:
-    chain = []
+#cicleFinder.cycleAddedEvent.add_listener()
 
-class GameField:
-    dots = {}
-    
-    def addNewDot(self, position):
-        newDot = Dot()
-        self.dots[position] = newDot 
-
-    def getDots(self):
-        return self.dots
-
-gameField = GameField()
+def showCicles():
+    cycles = cicleFinder.get_cicles()
+    cycles = list(map(list, cycles))
+    print("nodes", cicleFinder.G.nodes)
+    print(cycles)
 
 def main(request):
+    print("main")
     return render(request, 'index.html')
 
 def test(request):
+    dots = [[1, 2], [3, 4], [5, 6]]
+    print("test")
     if request.method == 'POST':
         position = request.POST.get('position')
-        gameField.addNewDot(position)
-        print(gameField.getDots())
+        position = tuple(map(int, position.split(',')))
+        gameField.add_new_dot(position)
 
-       
+        showCicles()
+
     return render(request, 'index.html')
+
+
+
 
