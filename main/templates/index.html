@@ -102,13 +102,13 @@
         gameContainer.addEventListener('click', (event) => {
             if (event.target.classList.contains('intersection')) {
                 var dataset = event.target.dataset;
-                paintOverDot(dataset.row, dataset.col, 'red');
+                paintOverDot(dataset.col, dataset.row, 'red');
             }
         });
 
         function paintOverDot(x, y, color) {
-            var dot = dots[x][y];
-            dot.style.backgroundColor = `${color}`;
+            // var dot = dots[y][x];
+            // dot.style.backgroundColor = `${color}`;
             $.ajax({
                 url: 'test/',
                 type: 'POST',
@@ -117,6 +117,25 @@
                 },
                 data: {
                     'position': `${[x, y]}`
+                },
+                success: function(data) {
+                    console.log(data.cycles);
+                    var cycles = data.cycles;
+                    var dot = data.dots;
+                    // console.log(dot)
+                    var color = data.color
+                    clear();
+                    clearCicles();
+                    for (let i = 0; i < dot.length; i++) {
+                        let postionX = dot[i][1];
+                        let positionY = dot[i][0];
+                        var currentDot = dots[postionX][positionY];
+                        console.log(currentDot);
+                        currentDot.style.backgroundColor = `${color}`;
+                    }
+                    for (let i = 0; i < cycles.length; i++) {
+                        paintCicles(cycles[i]);
+                    }
                 }
             })
         }

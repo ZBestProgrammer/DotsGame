@@ -39,14 +39,14 @@ class CicleFinder:
 
     def find_neighbours(self, position):
         offsets = [
-            (1,0),
-            (0,-1),
-            (-1, 0),
-            (0, 1),
-            (1,1),
-            (1,-1),
-            (-1,-1),
-            (-1,1)
+            [1,0],
+            [0,-1],
+            [-1, 0],
+            [0, 1],
+            [1,1],
+            [1,-1],
+            [-1,-1],
+            [-1,1]
         ]
 
         positions = map(lambda x: add_tuples(position, x), offsets)
