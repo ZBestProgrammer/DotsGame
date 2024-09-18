@@ -15,7 +15,6 @@ def add_tuples(a, b):
 class CicleFinder:
     gameField = 0
     G = nx.Graph()
-    dots = []
     cycles = []
 
     def __init__(self, game_field):
@@ -23,18 +22,16 @@ class CicleFinder:
         self.gameField.dotAddedEvent.add_listener(self.dot_added)
 
     def get_cicles(self):
-        return [[self.dots[x] for x in cicle] for cicle in self.cycles]
+        return self.cycles
 
     def dot_added(self, new_dot_position):
         print("Событие работает: " + str(new_dot_position))
         neighbours = self.find_neighbours(new_dot_position)
-        index = len(self.dots)
 
-        self.G.add_node(index)
+        self.G.add_node(new_dot_position)
         for n in neighbours:
-            self.G.add_edge(index, self.dots.index(n))
+            self.G.add_edge(new_dot_position, n)
         self.cycles = nx.minimum_cycle_basis(self.G)
-        self.dots.append(new_dot_position)
 
 
     def find_neighbours(self, position):
