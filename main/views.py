@@ -6,11 +6,16 @@ from DotsGame.GameField import *
 
 #cicleFinder.cycleAddedEvent.add_listener()
 
-def showCicles():
-    cycles = cicleFinder.get_cicles()
-    cycles = list(map(list, map(list, cycles)))
-    
-    return cycles
+def show():
+    datas = []
+    for player in players:
+        print(list(map(list, map(list, player.cycles))))
+        datas.append({
+            'cycles': list(map(list, map(list, player.cycles))),
+            'dots': list(player.dots),
+            'color': player.color
+        })
+    return datas
 
 def main(request):
     print("main")
@@ -21,19 +26,11 @@ def test(request):
     if request.method == 'POST':
         position = request.POST.get('position')
         position = tuple(map(int, position.split(',')))
-        gameField.add_new_dot(position)
-        cycles = showCicles()
-        dotsList = list(gameField.get_dots_positions())        
-        color = 'blue'
-        data = {
-            'cycles': cycles,
-            'dots': dotsList,
-            'color': color
-        }
-        return JsonResponse(data=data)
-
-
-
+        uiInput.make_move(position)
+        #gameField.add_new_dot(position)
+        datas = show()
+        playerSwitcher.switch_player()
+        return JsonResponse(data={'data': datas})
     return HttpResponseRedirect('/')
 
 

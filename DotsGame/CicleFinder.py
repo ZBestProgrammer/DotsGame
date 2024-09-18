@@ -13,25 +13,19 @@ def add_tuples(a, b):
 
 
 class CicleFinder:
-    gameField = 0
-    G = nx.Graph()
-    cycles = []
+    G = None
 
-    def __init__(self, game_field):
-        self.gameField = game_field
-        self.gameField.dotAddedEvent.add_listener(self.dot_added)
+    def __init__(self):
+        self.G = nx.Graph()
 
-    def get_cicles(self):
-        return self.cycles
-
-    def dot_added(self, new_dot_position):
-        print("Событие работает: " + str(new_dot_position))
+    def find_cycles(self, new_dot_position):
+        print("Поиск циклов: " + str(new_dot_position))
         neighbours = self.find_neighbours(new_dot_position)
 
         self.G.add_node(new_dot_position)
         for n in neighbours:
             self.G.add_edge(new_dot_position, n)
-        self.cycles = nx.minimum_cycle_basis(self.G)
+        return nx.minimum_cycle_basis(self.G)
 
 
     def find_neighbours(self, position):
@@ -48,5 +42,5 @@ class CicleFinder:
 
         positions = map(lambda x: add_tuples(position, x), offsets)
         s1 = pd.Series(positions)
-        s2 = pd.Series(self.gameField.dots.keys())
+        s2 = pd.Series(list(self.G.nodes)) 
         return list(s1[s1.isin(s2)])

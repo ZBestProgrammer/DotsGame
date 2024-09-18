@@ -6,18 +6,20 @@ class GameField:
     dotType = int
     dots = {}
 
-    dotAddedEvent = Event()
+    dotAddedEvent = None
 
     def __init__(self, dot_type):
         self.dotType = dot_type
+        self.dotAddedEvent = Event()
 
     def add_new_dot(self, position):
         if(position in self.dots.keys()):
-            return
+            return False
         newDot = self.dotType()
         self.dots[position] = newDot
         print(position)
         self.dotAddedEvent.invoke(position)
+        return True
 
     def get_dots_positions(self):
         return self.dots.keys()
