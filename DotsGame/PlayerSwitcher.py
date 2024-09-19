@@ -17,6 +17,7 @@ class Player:
     cycleFinder = None
     dots = []
     cycles = []
+    dots_in_cycles = []
 
     color = ""
 
@@ -31,7 +32,7 @@ class Player:
     
     def move(self, move):
         if(self.gameField.add_new_dot(move)):
-            self.cycles = self.cycleFinder.find_cycles(move)
+            self.cycles, self.dots_in_cycles = self.cycleFinder.find_filtred_cycles(move)
             self.dots = self.cycleFinder.G.nodes
 
         

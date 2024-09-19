@@ -9,11 +9,16 @@ from DotsGame.GameField import *
 def show():
     datas = []
     for player in players:
-        print(list(map(list, map(list, player.cycles))))
+        cycles = list(map(list, map(list, player.cycles)))
+        dots_in_cycle = player.dots_in_cycles
+        print(dots_in_cycle)
+        
+
         datas.append({
-            'cycles': list(map(list, map(list, player.cycles))),
+            'cycles': cycles,
             'dots': list(player.dots),
-            'color': player.color
+            'color': player.color,
+            'dots_in_cycle': dots_in_cycle
         })
     return datas
 

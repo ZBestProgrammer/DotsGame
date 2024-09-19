@@ -123,13 +123,21 @@
                     for (let d = 0; d < data.data.length; d++){
                         var cycles = data.data[d].cycles;
                         var dot = data.data[d].dots;
-                        // console.log(dot)
+                        var dots_in_cycle = data.data[d].dots_in_cycle;
                         var color = data.data[d].color
                         for (let i = 0; i < dot.length; i++) {
                             let postionX = dot[i][1];
                             let positionY = dot[i][0];
                             var currentDot = dots[postionX][positionY];
                             currentDot.style.backgroundColor = `${color}`;
+
+                            for (let k = 0; k < dots_in_cycle.length; k++) {
+                                var px = dots_in_cycle[k][1];
+                                var py = dots_in_cycle[k][0];
+                                var currentDot = dots[px][py];
+                                currentDot.style.backgroundColor = 'grey';
+                            }
+
                         }
                         for (let i = 0; i < cycles.length; i++) {
                             paintCicles(cycles[i], color);
@@ -175,7 +183,6 @@
         }
 
         function paintCicles(dots, color) {
-            console.log(dots);
             for (let i = 0; i < dots.length; i++) {
                 nextID = (i + 1) % dots.length;        
                 paintStick(dots[i][0], dots[i][1], dots[nextID][0], dots[nextID][1], color);

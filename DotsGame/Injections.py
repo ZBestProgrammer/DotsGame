@@ -10,5 +10,5 @@ uiInput = Input()
 inputs = [uiInput, uiInput]
 plA = Player(uiInput, gameField, cicleFinderA, "blue")
 plB = Player(uiInput, gameField, cicleFinderB, "red")
-players = [plA, plB]
+players = [plA] #plB
 playerSwitcher = PlayerSwitcher(gameField, players)
