@@ -19,14 +19,12 @@ class CicleFinder:
     def find_filtred_cycles(self, new_dot_position):
         cycles = self.find_cycles(new_dot_position)
         cycles = [x for x in cycles if len(x) > 3]
-        cyclesF = []
-        dots_in_cyclesF = []
+        result = []
         for cycle in cycles:
             dots_in_cycle = self.find_dots_in_cycle(cycle)
             if len(dots_in_cycle) > 0:
-                cyclesF.append(cycle)
-                dots_in_cyclesF += dots_in_cycle
-        return cyclesF, dots_in_cyclesF
+                result.append((cycle, dots_in_cycle))
+        return result
 
 
     def remove(self, dot_position):

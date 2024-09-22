@@ -36,15 +36,24 @@ class Player:
 
     def move(self, move, players):
         if self.gameField.add_new_dot(move):
-            self.cycles, self.dots_in_cycles = self.cycleFinder.find_filtred_cycles(move)
+            cycles_dots_in = self.cycleFinder.find_filtred_cycles(move)
+            #self.cycles, self.dots_in_cycles = self.filtre_cycle(cycles_dots_in)
             self.dots = list(self.cycleFinder.G.nodes)
+            self.count_of_win_dots = 0 #есть чужие точки
+            self.cycles = []
+            self.dots_in_cycles = []
+            for cycle_dots in cycles_dots_in:
+                count_dots_in_current_cycle = 0
+                for player in players:
+                    if player != self:
+                        count_dots_in_current_cycle += player.eat_dots(cycle_dots[1])
+                if count_dots_in_current_cycle > 0:
+                    self.cycles.append(cycle_dots[0])
+                    self.dots_in_cycles += cycle_dots[1]
+                    self.count_of_win_dots += count_dots_in_current_cycle
             for dot in self.dots_in_cycles:
                 self.gameField.add_new_dot(dot)
-            count_of_win_dots = 0 #есть чужие точки
-            for player in players:
-                if player != self:
-                    count_of_win_dots += player.eat_dots(self.dots_in_cycles)
-            print(self.color, "win dots:", count_of_win_dots)
+            print(self.color, "win dots:", self.count_of_win_dots)
             return True
         return False
 
@@ -52,7 +61,6 @@ class Player:
         s1 = pd.Series(dots_in_ather_cycles)
         s2 = pd.Series(self.dots)
         intersection = list(s1[s1.isin(s2)])
-        print("eat:", len(intersection))
         for x in intersection:
             self.cycleFinder.remove(x)
         return len(intersection)
