@@ -6,11 +6,6 @@ from DotsGame.Events.Event import Event
 import matplotlib.path as mpath
 
 
-
-class CicleFinderDot:
-    chain = []
-
-
 def add_tuples(a, b):
     return tuple(v1 + v2 for v1, v2 in zip(a, b))
 
@@ -28,10 +23,16 @@ class CicleFinder:
         dots_in_cyclesF = []
         for cycle in cycles:
             dots_in_cycle = self.find_dots_in_cycle(cycle)
-            if(len(dots_in_cycle) > 0):
+            if len(dots_in_cycle) > 0:
                 cyclesF.append(cycle)
                 dots_in_cyclesF += dots_in_cycle
         return cyclesF, dots_in_cyclesF
+
+
+    def remove(self, dot_position):
+        self.G.remove_node(dot_position)
+        self.G.add_node(dot_position)
+        #self.G.remove_edges_from(dot_position)
     
     
     def find_bounding_box(self, cycle):
