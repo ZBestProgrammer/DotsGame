@@ -1,6 +1,9 @@
 class Event:
     list = []
 
+    def __init__(self) -> None:
+        self.list = []
+
     def add_listener(self, listener):
         self.list += [listener]
 
