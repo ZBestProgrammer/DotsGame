@@ -15,7 +15,8 @@ def show():
             'cycles': cycles,
             'dots': list(player.dots),
             'color': player.color,
-            'dots_in_cycle': []
+            'dots_in_cycle': dots_in_cycle,
+            'count_of_win_dots': player.count_of_win_dots
         })
     return datas
 

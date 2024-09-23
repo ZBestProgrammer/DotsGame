@@ -53,7 +53,7 @@ class Player:
                     self.count_of_win_dots += count_dots_in_current_cycle
             for dot in self.dots_in_cycles:
                 self.gameField.add_new_dot(dot)
-            print(self.color, "win dots:", self.count_of_win_dots)
+            # print(self.color, "win dots:", self.count_of_win_dots)
             return True
         return False
 
